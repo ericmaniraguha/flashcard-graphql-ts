@@ -2,10 +2,17 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String!
+  user: user!
+}
+
 type Mutation {
+  Signup(email: String!, names: String!, password: String!): AuthPayload!
   createCard(answer: String!, question: String!): card!
   createUser(email: String!, names: String!, password: String!): user!
   deleteCard(id: Int!): String!
+  login(email: String!, password: String!): AuthPayload!
   updateCard(answer: String!, id: Int!, question: String!): card!
 }
 
