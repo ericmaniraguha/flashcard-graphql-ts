@@ -1,6 +1,6 @@
 import { Context, context } from '../../context';
 
-const getAllCards = async (parent: any, args: any, context: Context) => {
+const getAllCards = async (parent: any, args: any, context: any) => {
   const allCards = await context.prisma.flashcard.findMany();
   return allCards;
 };

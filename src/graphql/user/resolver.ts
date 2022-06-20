@@ -1,11 +1,11 @@
 import { Context, context } from '../../context';
 
-const getAllUser = async (parent: any, args: any, context: Context) => {
+const getAllUser = async (parent: any, args: any, context: any) => {
   const allUsers = await context.prisma.user.findMany();
   return allUsers;
 };
 
-const getOneUser = async (parent: any, args: any, context: Context) => {
+const getOneUser = async (parent: any, args: any, context: any) => {
   const existingUser = await context.prisma.user.findUnique({
     where: {
       email: args.email,
@@ -14,7 +14,7 @@ const getOneUser = async (parent: any, args: any, context: Context) => {
   return existingUser;
 };
 
-const createNewUser = async (parent: any, args: any, context: Context) => {
+const createNewUser = async (parent: any, args: any, context: any) => {
   const createAUser = await context.prisma.user.create({
     data: {
       names: args.names,
@@ -26,7 +26,7 @@ const createNewUser = async (parent: any, args: any, context: Context) => {
   return createAUser;
 };
 
-const userUniqueCard = async (parent: any, args: any, context: Context) => {
+const userUniqueCard = async (parent: any, args: any, context: any) => {
   const userCard = await context.prisma.flashcard.findUnique({
     where: {
       id: args.id,
