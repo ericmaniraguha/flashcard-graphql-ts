@@ -1,1 +1,1 @@
-export const SECRET_KEY = process.env.JWT_SECRET || 'always_with_graphql';
+export const SECRET_KEY = process.env.JWT_SECRET || 'this-a-great-courses';

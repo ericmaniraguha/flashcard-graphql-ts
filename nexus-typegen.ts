@@ -64,14 +64,15 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     Signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
-    createCard: NexusGenRootTypes['card']; // card!
-    createUser: NexusGenRootTypes['user']; // user!
+    createNewCard: NexusGenRootTypes['card']; // card!
+    createNewUser: NexusGenRootTypes['user']; // user!
     deleteCard: string; // String!
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateCard: NexusGenRootTypes['card']; // card!
   }
   Query: { // field return type
-    getCards: NexusGenRootTypes['card'][]; // [card!]!
+    getAllCards: NexusGenRootTypes['card'][]; // [card!]!
+    getCardOwners: Array<NexusGenRootTypes['card'] | null>; // [card]!
     getOneCard: NexusGenRootTypes['card']; // card!
     getOneUser: NexusGenRootTypes['user']; // user!
     getUsers: NexusGenRootTypes['user'][]; // [user!]!
@@ -97,14 +98,15 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     Signup: 'AuthPayload'
-    createCard: 'card'
-    createUser: 'user'
+    createNewCard: 'card'
+    createNewUser: 'user'
     deleteCard: 'String'
     login: 'AuthPayload'
     updateCard: 'card'
   }
   Query: { // field return type name
-    getCards: 'card'
+    getAllCards: 'card'
+    getCardOwners: 'card'
     getOneCard: 'card'
     getOneUser: 'user'
     getUsers: 'user'
@@ -130,11 +132,11 @@ export interface NexusGenArgTypes {
       names: string; // String!
       password: string; // String!
     }
-    createCard: { // args
+    createNewCard: { // args
       answer: string; // String!
       question: string; // String!
     }
-    createUser: { // args
+    createNewUser: { // args
       email: string; // String!
       names: string; // String!
       password: string; // String!

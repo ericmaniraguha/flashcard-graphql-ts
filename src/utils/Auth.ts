@@ -1,7 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 
-export const SECRET_KEY =
-  process.env.JWT_SECRET || 'better-life-need-tostraggle';
+export const SECRET_KEY = process.env.JWT_SECRET || 'this-a-great-courses';
 
 export interface AuthTokenPayload {
   userId: number;

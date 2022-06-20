@@ -1,5 +1,5 @@
 import { objectType } from 'nexus';
-import { userUniqueCard } from './resolver';
+// import { userUniqueCard } from './resolver';
 
 export const user = objectType({
   name: 'user',
@@ -10,7 +10,11 @@ export const user = objectType({
       t.nonNull.string('password'),
       t.nonNull.list.nonNull.field('cards', {
         type: 'card',
-        resolve: userUniqueCard,
+        resolve(parent, args, context) {
+          return context.prisma.user
+            .findUnique({ where: { id: parent.id } })
+            .flashcards();
+        },
       });
   },
 });

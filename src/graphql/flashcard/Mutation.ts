@@ -4,7 +4,7 @@ import { createNewCard, deleteCard, updateCard } from './Resolver';
 export const createCard = extendType({
   type: 'Mutation',
   definition(t) {
-    t.nonNull.field('createCard', {
+    t.nonNull.field('createNewCard', {
       type: 'card',
       args: {
         question: nonNull(stringArg()),

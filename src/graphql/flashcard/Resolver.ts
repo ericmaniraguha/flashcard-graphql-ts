@@ -5,27 +5,52 @@ const getAllCards = async (parent: any, args: any, context: Context) => {
   return allCards;
 };
 
-const getOneCard = async (parent: any, args: any, context: Context) => {
+const getOneCard = async (parent: any, args: any, context: any) => {
   const existingCard = await context.prisma.flashcard.findUnique({
     where: {
       id: args.id,
     },
   });
+  if (!existingCard) throw new Error('There is no flashcard with such ID');
   return existingCard;
 };
 
-const createNewCard = async (parent: any, args: any, context: Context) => {
+const getCardOwners = async (parent: any, args: any, context: any) => {
+  const userId = context.userId;
+  if (!userId) throw new Error('Access denied');
+  const cardOwner = await context.prisma.flashcard.findMany({
+    where: { createdById: userId },
+  });
+  return cardOwner;
+};
+
+const createNewCard = async (parent: any, args: any, context: any) => {
+  const userId = context.userId;
+  if (!userId) throw new Error('Access denied');
   const createACard = await context.prisma.flashcard.create({
     data: {
       question: args.question,
       answer: args.answer,
+      createdById: userId,
     },
   });
 
   return createACard;
 };
 
-const updateCard = async (parent: any, args: any, context: Context) => {
+const updateCard = async (parent: any, args: any, context: any) => {
+  const userId = context.userId;
+  if (!userId) throw new Error('Access denied');
+
+  const cardToBeUpdate = await context.prisma.flashcard.findUnique({
+    where: {
+      id: args.id,
+    },
+  });
+  if (!cardToBeUpdate) throw new Error('No such card found.');
+  if (cardToBeUpdate.createdById !== userId)
+    throw new Error('You have no access to this card.');
+
   const updatedCard = await context.prisma.flashcard.update({
     where: {
       id: args.id,
@@ -35,20 +60,31 @@ const updateCard = async (parent: any, args: any, context: Context) => {
       answer: args.answer,
     },
   });
-
   return updatedCard;
 };
 
-const deleteCard = async (parent: any, args: any, context: Context) => {
-  const deletedCard = await context.prisma.flashcard.delete({
+const deleteCard = async (parent: any, args: any, context: any) => {
+  const userId = context.userId;
+  if (!userId) throw new Error('Access denied!');
+  const cardToDelete = await context.prisma.flashcard.findUnique({
     where: {
       id: args.id,
     },
   });
-
-  return deletedCard;
+  if (!cardToDelete) throw new Error('No such card found.');
+  if (cardToDelete.createdById !== userId)
+    throw new Error('You have no access to this card.');
+  await context.prisma.flashcard.delete({
+    where: { id: args.id },
+  });
+  return 'The has been Successful deleted.';
 };
 
-
-
-export { getAllCards, getOneCard, createNewCard, updateCard, deleteCard };
+export {
+  getAllCards,
+  getOneCard,
+  createNewCard,
+  updateCard,
+  deleteCard,
+  getCardOwners,
+};
