@@ -2,6 +2,9 @@ import { Context, context } from '../../context';
 
 const getAllCards = async (parent: any, args: any, context: any) => {
   const allCards = await context.prisma.flashcard.findMany();
+  if (args.orderBy) {
+    return _.orderBy(allCards, ['question'], [args.orderBy]);
+  }
   return allCards;
 };
 
@@ -15,13 +18,16 @@ const getOneCard = async (parent: any, args: any, context: any) => {
   return existingCard;
 };
 
-const getCardOwners = async (parent: any, args: any, context: any) => {
+const getOwnersCard = async (parent: any, args: any, context: any) => {
   const userId = context.userId;
   if (!userId) throw new Error('Access denied');
-  const cardOwner = await context.prisma.flashcard.findMany({
+  const ownCards = await context.prisma.flashcard.findMany({
     where: { createdById: userId },
   });
-  return cardOwner;
+  if (args.orderBy) {
+    return _.orderBy(ownCards, ['question'], [args.orderBy]);
+  }
+  return ownCards;
 };
 
 const createNewCard = async (parent: any, args: any, context: any) => {
@@ -86,5 +92,5 @@ export {
   createNewCard,
   updateCard,
   deleteCard,
-  getCardOwners,
+  getOwnersCard,
 };

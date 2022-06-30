@@ -1,11 +1,14 @@
-import { extendType, intArg, nonNull, stringArg } from 'nexus';
-import { getAllCards, getCardOwners, getOneCard } from './Resolver';
+import { extendType, intArg, nonNull, arg } from 'nexus';
+import { getAllCards, getOwnersCard, getOneCard } from './Resolver';
 
 export const getCards = extendType({
   type: 'Query',
   definition(t) {
     t.nonNull.list.nonNull.field('getAllCards', {
       type: 'card',
+      args: {
+        orderBy: arg({ type: 'Sort' }),
+      },
       resolve: getAllCards,
     });
 
@@ -17,9 +20,12 @@ export const getCards = extendType({
       resolve: getOneCard,
     });
 
-    t.nonNull.list.field('getCardOwners', {
+    t.nonNull.list.field('getOwnersCard', {
       type: 'card',
-      resolve: getCardOwners,
+      args: {
+        orderBy: arg({ type: 'Sort' }),
+      },
+      resolve: getOwnersCard,
     });
   },
 });

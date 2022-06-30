@@ -17,6 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  Sort: "asc" | "desc"
 }
 
 export interface NexusGenScalars {
@@ -55,7 +56,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
@@ -72,9 +73,9 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     getAllCards: NexusGenRootTypes['card'][]; // [card!]!
-    getCardOwners: Array<NexusGenRootTypes['card'] | null>; // [card]!
     getOneCard: NexusGenRootTypes['card']; // card!
     getOneUser: NexusGenRootTypes['user']; // user!
+    getOwnersCard: Array<NexusGenRootTypes['card'] | null>; // [card]!
     getUsers: NexusGenRootTypes['user'][]; // [user!]!
   }
   card: { // field return type
@@ -106,9 +107,9 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     getAllCards: 'card'
-    getCardOwners: 'card'
     getOneCard: 'card'
     getOneUser: 'user'
+    getOwnersCard: 'card'
     getUsers: 'user'
   }
   card: { // field return type name
@@ -155,11 +156,17 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    getAllCards: { // args
+      orderBy?: NexusGenEnums['Sort'] | null; // Sort
+    }
     getOneCard: { // args
       id: number; // Int!
     }
     getOneUser: { // args
       email: string; // String!
+    }
+    getOwnersCard: { // args
+      orderBy?: NexusGenEnums['Sort'] | null; // Sort
     }
   }
 }
@@ -174,7 +181,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 

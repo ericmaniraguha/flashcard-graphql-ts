@@ -17,11 +17,16 @@ type Mutation {
 }
 
 type Query {
-  getAllCards: [card!]!
-  getCardOwners: [card]!
+  getAllCards(orderBy: Sort): [card!]!
   getOneCard(id: Int!): card!
   getOneUser(email: String!): user!
+  getOwnersCard(orderBy: Sort): [card]!
   getUsers: [user!]!
+}
+
+enum Sort {
+  asc
+  desc
 }
 
 type card {
